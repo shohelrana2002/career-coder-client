@@ -1,15 +1,17 @@
 import { useRef, useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import toast from "react-hot-toast";
 import useGetAuth from "../../Hooks/useGetAuth";
 import { Eye, EyeOff, Lock } from "lucide-react";
 import SocialLogin from "../Shared/SocialLogin";
 
 const Login = () => {
-  const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const { handleSignIn, handleResetPass } = useGetAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location?.state || "/";
   const handleLogin = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -22,7 +24,7 @@ const Login = () => {
         return toast.error("plz verified Your Account !!");
       }
       toast.success("Login Successfully");
-      navigate("/");
+      navigate(from, { replace: true });
     } catch (err) {
       setLoading(false);
       toast.error(err?.message);
@@ -30,6 +32,7 @@ const Login = () => {
       setLoading(false);
     }
   };
+  // reset
   const emailRef = useRef();
   const handleForget = async () => {
     const email = emailRef.current.value;

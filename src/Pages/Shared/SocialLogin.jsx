@@ -1,16 +1,18 @@
 import React from "react";
 import useGetAuth from "../../Hooks/useGetAuth";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa6";
 const SocialLogin = () => {
   const { handleGoogle } = useGetAuth();
+  const location = useLocation();
   const navigate = useNavigate();
+  const from = location?.state || "/";
   const handleGoogleLogin = async () => {
     try {
       await handleGoogle();
-      navigate("/");
+      navigate(from, { replace: true });
     } catch (err) {
       toast.error(err?.message);
     }
