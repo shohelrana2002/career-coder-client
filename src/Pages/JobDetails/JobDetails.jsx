@@ -1,4 +1,4 @@
-import { useLoaderData, useNavigate } from "react-router";
+import { Link, useLoaderData, useNavigate } from "react-router";
 
 const JobDetails = () => {
   const data = useLoaderData();
@@ -19,6 +19,7 @@ const JobDetails = () => {
     jobType,
     applicationDeadline,
     status,
+    _id,
   } = job;
   const navigate = useNavigate();
   return (
@@ -113,9 +114,12 @@ const JobDetails = () => {
 
         {/* Apply Button */}
         <div className="mt-12 text-center">
-          <button className="btn btn-primary transform hover:scale-105">
+          <Link
+            to={`/jobApply/${_id}`}
+            className="btn btn-primary transform hover:scale-105"
+          >
             Apply Now🚀
-          </button>
+          </Link>
         </div>
 
         {/* Job Status */}
