@@ -1,9 +1,12 @@
 import axios from "axios";
 import React from "react";
+import toast from "react-hot-toast";
 import { Link, useParams } from "react-router";
+import useGetAuth from "../../Hooks/useGetAuth";
 
 const JobApply = () => {
   const { id } = useParams();
+  const { user } = useGetAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,6 +19,7 @@ const JobApply = () => {
     const resume = form.resume.value;
     const coverNote = form.coverNote.value;
     const appliedData = {
+      jobId: id,
       name,
       email,
       linkedin,
@@ -24,9 +28,18 @@ const JobApply = () => {
       resume,
       coverNote,
     };
-    // console.log(appliedData);
+
     try {
-      await axios.post(`http://localhost:4000/applied/${id}`, appliedData);
+      await axios
+        .post(`http://localhost:4000/applied`, appliedData)
+        .then((res) => {
+          if (res?.data?.insertedId) {
+            toast.success("Applied Jobs Successfully");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } catch (err) {
       console.log(err);
     }
@@ -63,6 +76,7 @@ const JobApply = () => {
           <label className="block font-medium mb-1">Email</label>
           <input
             name="email"
+            value={user?.email}
             type="email"
             className="w-full border px-3 py-2 rounded"
             placeholder="Enter your email"

@@ -23,6 +23,24 @@ const NavBar = () => {
           Home
         </NavLink>
       </li>
+      {user && (
+        <li>
+          <NavLink
+            to="/application"
+            end
+            className={({ isActive }) =>
+              `block px-4 py-2 rounded-md text-sm font-semibold transition-all duration-200
+       ${
+         isActive
+           ? "bg-blue-600 text-white shadow-md scale-[1.03]"
+           : "text-gray-700 hover:text-blue-600 hover:bg-blue-100"
+       }`
+            }
+          >
+            My Application
+          </NavLink>
+        </li>
+      )}
     </>
   );
   const navigate = useNavigate();
@@ -67,15 +85,20 @@ const NavBar = () => {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{nav}</ul>
       </div>
-      <div className="navbar-end">
+      <div className="navbar-end gap-x-2">
         {user ? (
           <button onClick={handleLogout} className="btn btn-primary">
             Logout
           </button>
         ) : (
-          <Link to="/register" className="btn btn-primary">
-            Register
-          </Link>
+          <>
+            <Link to="/login" className="btn btn-outline">
+              Login
+            </Link>
+            <Link to="/register" className="btn btn-primary">
+              Register
+            </Link>
+          </>
         )}
       </div>
     </div>
