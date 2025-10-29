@@ -2,27 +2,27 @@ import React from "react";
 
 const ApplicationStats = () => {
   return (
-    <>
-      <div className="stats stats-vertical lg:stats-horizontal shadow">
-        <div className="stat">
-          <div className="stat-title">Downloads</div>
-          <div className="stat-value">31K</div>
-          <div className="stat-desc">Jan 1st - Feb 1st</div>
+    <div className="w-full flex justify-center mt-6">
+      <div className="stats shadow bg-base-100 stats-vertical md:stats-horizontal gap-4 p-4 rounded-2xl">
+        <div className="stat hover:bg-base-200 transition-all cursor-pointer rounded-xl p-4">
+          <div className="stat-title text-gray-500">Total Applied</div>
+          <div className="stat-value text-blue-600 font-extrabold">31</div>
+          <div className="stat-desc text-green-500">+5 this week</div>
         </div>
 
-        <div className="stat">
-          <div className="stat-title">New Users</div>
-          <div className="stat-value">4,200</div>
-          <div className="stat-desc">↗︎ 400 (22%)</div>
+        <div className="stat hover:bg-base-200 transition-all cursor-pointer rounded-xl p-4">
+          <div className="stat-title text-gray-500">Accepted</div>
+          <div className="stat-value text-purple-600 font-extrabold">08</div>
+          <div className="stat-desc text-green-500">↗︎ 12%</div>
         </div>
 
-        <div className="stat">
-          <div className="stat-title">New Registers</div>
-          <div className="stat-value">1,200</div>
-          <div className="stat-desc">↘︎ 90 (14%)</div>
+        <div className="stat hover:bg-base-200 transition-all cursor-pointer rounded-xl p-4">
+          <div className="stat-title text-gray-500">Rejected</div>
+          <div className="stat-value text-red-600 font-extrabold">04</div>
+          <div className="stat-desc text-red-500">↘︎ 5%</div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

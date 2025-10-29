@@ -41,6 +41,25 @@ const NavBar = () => {
           </NavLink>
         </li>
       )}
+      {/* /check by role TODO: */}
+      {user && (
+        <li>
+          <NavLink
+            to="/addJob"
+            end
+            className={({ isActive }) =>
+              `block px-4 py-2 rounded-md text-sm font-semibold transition-all duration-200
+       ${
+         isActive
+           ? "bg-blue-600 text-white shadow-md scale-[1.03]"
+           : "text-gray-700 hover:text-blue-600 hover:bg-blue-100"
+       }`
+            }
+          >
+            Add Job
+          </NavLink>
+        </li>
+      )}
     </>
   );
   const navigate = useNavigate();
