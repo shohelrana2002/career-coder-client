@@ -1,6 +1,11 @@
+import axios from "axios";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
+import useGetAuth from "../../Hooks/useGetAuth";
 
 const AddJob = () => {
+  const { user } = useGetAuth();
+  const [loading, setLoading] = useState(false);
   const [requirement, setRequirement] = useState("");
   const [requirements, setRequirements] = useState([]);
   const [responsibility, setResponsibility] = useState("");
@@ -28,15 +33,16 @@ const AddJob = () => {
   };
 
   // Handle Form Submit
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     const form = e.target;
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
 
     const salaryRange = {
-      minSalary: data.minSalary,
-      maxSalary: data.maxSalary,
+      min: data.minSalary,
+      max: data.maxSalary,
       currency: data.currency,
     };
 
@@ -46,8 +52,20 @@ const AddJob = () => {
       responsibilities,
       salaryRange,
     };
-
-    console.log(convertData);
+    try {
+      await axios
+        .post("http://localhost:4000/jobs", convertData)
+        .then((res) => {
+          if (res?.data?.insertedId) {
+            toast.success("Job Add Successfully");
+          }
+        });
+    } catch (err) {
+      toast.error(err.message);
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -59,18 +77,21 @@ const AddJob = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <input
             name="title"
+            type="text"
             placeholder="Job Title"
             className="input input-bordered w-full"
             required
           />
           <input
             name="location"
+            type="text"
             placeholder="Job Location"
             className="input input-bordered w-full"
             required
           />
           <input
             name="category"
+            type="text"
             placeholder="Category"
             className="input input-bordered w-full"
             required
@@ -92,11 +113,13 @@ const AddJob = () => {
           />
           <input
             name="company"
+            type="text"
             placeholder="Company Name"
             className="input input-bordered w-full"
             required
           />
           <input
+            type="url"
             name="company_logo"
             placeholder="Company Logo URL"
             className="input input-bordered w-full"
@@ -224,12 +247,16 @@ const AddJob = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <input
             name="hr_name"
+            type="text"
             placeholder="HR Name"
             className="input input-bordered w-full"
             required
           />
+
           <input
             name="hr_email"
+            type="email"
+            value={user?.email}
             placeholder="HR Email"
             className="input input-bordered w-full"
             required
@@ -237,14 +264,19 @@ const AddJob = () => {
         </div>
 
         {/* Status */}
+        <label>Job Active or DeActive </label>
         <select name="status" className="select select-bordered w-full mt-4">
           <option value="active">Active</option>
           <option value="paused">Paused</option>
           <option value="closed">Closed</option>
         </select>
 
-        <button type="submit" className="btn btn-primary w-full mt-6 text-lg">
-          Submit
+        <button
+          disabled={loading}
+          type="submit"
+          className="btn btn-primary w-full mt-6 text-lg"
+        >
+          {loading ? "Loading....." : " Submit"}
         </button>
       </form>
     </div>

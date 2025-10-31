@@ -43,22 +43,40 @@ const NavBar = () => {
       )}
       {/* /check by role TODO: */}
       {user && (
-        <li>
-          <NavLink
-            to="/addJob"
-            end
-            className={({ isActive }) =>
-              `block px-4 py-2 rounded-md text-sm font-semibold transition-all duration-200
+        <>
+          <li>
+            <NavLink
+              to="/addJob"
+              end
+              className={({ isActive }) =>
+                `block px-4 py-2 rounded-md text-sm font-semibold transition-all duration-200
        ${
          isActive
            ? "bg-blue-600 text-white shadow-md scale-[1.03]"
            : "text-gray-700 hover:text-blue-600 hover:bg-blue-100"
        }`
-            }
-          >
-            Add Job
-          </NavLink>
-        </li>
+              }
+            >
+              Add Job
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/myPostedJobs"
+              end
+              className={({ isActive }) =>
+                `block px-4 py-2 rounded-md text-sm font-semibold transition-all duration-200
+       ${
+         isActive
+           ? "bg-blue-600 text-white shadow-md scale-[1.03]"
+           : "text-gray-700 hover:text-blue-600 hover:bg-blue-100"
+       }`
+              }
+            >
+              My posted Jobs
+            </NavLink>
+          </li>
+        </>
       )}
     </>
   );
