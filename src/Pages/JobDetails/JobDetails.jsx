@@ -3,7 +3,7 @@ import { Link, useLoaderData, useNavigate } from "react-router";
 const JobDetails = () => {
   const data = useLoaderData();
   const job = data?.data || {};
-
+  console.log(job);
   const {
     title,
     company,

@@ -1,55 +1,80 @@
 import React, { useState } from "react";
 
 const AddJob = () => {
+  const [requirement, setRequirement] = useState("");
+  const [requirements, setRequirements] = useState([]);
+  const [responsibility, setResponsibility] = useState("");
+  const [responsibilities, setResponsibilities] = useState([]);
+
+  // Add / Remove Requirement
+  const addRequirement = () => {
+    if (requirement.trim() === "") return;
+    setRequirements([...requirements, requirement.trim()]);
+    setRequirement("");
+  };
+  //   remove for index data in array
+  const removeRequirement = (index) => {
+    setRequirements(requirements.filter((_, i) => i !== index));
+  };
+
+  // Add / Remove Responsibility
+  const addResponsibility = () => {
+    if (responsibility.trim() === "") return;
+    setResponsibilities([...responsibilities, responsibility.trim()]);
+    setResponsibility("");
+  };
+  const removeResponsibility = (index) => {
+    setResponsibilities(responsibilities.filter((_, i) => i !== index));
+  };
+
+  // Handle Form Submit
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
 
-    console.log(data);
-  };
-  const [requirement, setRequirement] = useState("");
-  const [requirements, setRequirements] = useState([]);
+    const salaryRange = {
+      minSalary: data.minSalary,
+      maxSalary: data.maxSalary,
+      currency: data.currency,
+    };
 
-  const addRequirement = () => {
-    if (requirement.trim() === "") return;
-    setRequirements([...requirements, requirement]);
-    setRequirement(""); // input clear
+    const convertData = {
+      ...data,
+      requirements,
+      responsibilities,
+      salaryRange,
+    };
+
+    console.log(convertData);
   };
-  const removeRequirement = (index) => {
-    const updated = requirements.filter((_, i) => i !== index);
-    setRequirements(updated);
-  };
+
   return (
-    <div>
-      <form
-        onSubmit={handleSubmit}
-        className="max-w-4xl mx-auto p-6 bg-base-200 rounded-xl shadow-lg"
-      >
-        <h2 className="text-3xl font-semibold mb-6 text-center">Post a Job</h2>
+    <div className="max-w-4xl mx-auto p-6 bg-base-200 rounded-xl shadow-lg">
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <h2 className="text-3xl font-semibold text-center">Post a Job</h2>
 
+        {/* Job Details */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <input
             name="title"
-            className="input input-bordered w-full"
             placeholder="Job Title"
+            className="input input-bordered w-full"
             required
           />
           <input
             name="location"
-            className="input input-bordered w-full"
             placeholder="Job Location"
+            className="input input-bordered w-full"
             required
           />
-
           <input
             name="category"
-            className="input input-bordered w-full"
             placeholder="Category"
+            className="input input-bordered w-full"
             required
           />
-
           <select
             name="jobType"
             className="select select-bordered w-full"
@@ -59,69 +84,67 @@ const AddJob = () => {
             <option value="Hybrid">Hybrid</option>
             <option value="Onsite">Onsite</option>
           </select>
-
           <input
             name="applicationDeadline"
             type="date"
             className="input input-bordered w-full"
             required
           />
-
           <input
             name="company"
-            className="input input-bordered w-full"
             placeholder="Company Name"
+            className="input input-bordered w-full"
             required
           />
           <input
             name="company_logo"
-            className="input input-bordered w-full"
             placeholder="Company Logo URL"
+            className="input input-bordered w-full"
             required
           />
         </div>
 
-        <h3 className="font-bold mt-6 mb-2">Salary Range</h3>
+        {/* Salary Range */}
+        <h3 className="font-bold text-lg">Salary Range</h3>
         <div className="grid grid-cols-3 gap-3">
           <input
             name="minSalary"
-            className="input input-bordered"
-            placeholder="Min"
             type="number"
+            placeholder="Min Salary"
+            className="input input-bordered"
             required
           />
           <input
             name="maxSalary"
-            className="input input-bordered"
-            placeholder="Max"
             type="number"
+            placeholder="Max Salary"
+            className="input input-bordered"
             required
           />
           <select name="currency" className="select select-bordered" required>
-            <option value="bdt">BDT</option>
-            <option value="usd">USD</option>
+            <option value="BDT">BDT</option>
+            <option value="USD">USD</option>
           </select>
         </div>
 
+        {/* Description */}
         <textarea
           name="description"
-          className="textarea textarea-bordered w-full mt-5"
-          rows="4"
           placeholder="Job Description"
+          rows={4}
+          className="textarea textarea-bordered w-full"
           required
         />
 
         {/* Requirements */}
-        <div className="mt-6">
-          <h3 className="font-bold text-lg mb-2">Requirements ✅</h3>
-
-          {/* Input Field */}
+        <div>
+          <h3 className="font-bold text-lg mb-2">Requirements</h3>
           <div className="flex gap-2">
             <input
-              className="input input-bordered w-full"
-              placeholder="Requirement"
               value={requirement}
               onChange={(e) => setRequirement(e.target.value)}
+              placeholder="Requirement"
+              className="input input-bordered w-full"
             />
             <button
               type="button"
@@ -131,9 +154,7 @@ const AddJob = () => {
               + Add
             </button>
           </div>
-
-          {/* Show Added Requirements */}
-          <u l className="mt-3 space-y-2">
+          <ul className="mt-3 space-y-2">
             {requirements.map((req, index) => (
               <li
                 key={index}
@@ -141,6 +162,7 @@ const AddJob = () => {
               >
                 {req}
                 <button
+                  type="button"
                   className="btn btn-xs btn-error"
                   onClick={() => removeRequirement(index)}
                 >
@@ -148,9 +170,7 @@ const AddJob = () => {
                 </button>
               </li>
             ))}
-          </u>
-
-          {/* Hidden field to send data */}
+          </ul>
           <input
             type="hidden"
             name="requirements"
@@ -159,41 +179,73 @@ const AddJob = () => {
         </div>
 
         {/* Responsibilities */}
-        <div className="mt-6">
-          <h3 className="font-bold">Responsibilities</h3>
+        <div>
+          <h3 className="font-bold text-lg mb-2">Responsibilities</h3>
+          <div className="flex gap-2">
+            <input
+              value={responsibility}
+              onChange={(e) => setResponsibility(e.target.value)}
+              placeholder="Responsibility"
+              className="input input-bordered w-full"
+            />
+            <button
+              type="button"
+              className="btn btn-outline"
+              onClick={addResponsibility}
+            >
+              + Add
+            </button>
+          </div>
+          <ul className="mt-3 space-y-2">
+            {responsibilities.map((res, index) => (
+              <li
+                key={index}
+                className="flex items-center justify-between bg-gray-100 px-3 py-1 rounded"
+              >
+                {res}
+                <button
+                  type="button"
+                  className="btn btn-xs btn-error"
+                  onClick={() => removeResponsibility(index)}
+                >
+                  Remove
+                </button>
+              </li>
+            ))}
+          </ul>
           <input
-            className="input input-bordered w-full mt-2"
-            placeholder={`Responsibility `}
-            required
+            type="hidden"
+            name="responsibilities"
+            value={JSON.stringify(responsibilities)}
           />
-
-          <button type="button" className="btn btn-outline btn-sm mt-2">
-            + Add Responsibility
-          </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-6">
+        {/* HR Info */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           <input
             name="hr_name"
-            className="input input-bordered w-full"
             placeholder="HR Name"
+            className="input input-bordered w-full"
             required
           />
           <input
             name="hr_email"
-            className="input input-bordered w-full"
             placeholder="HR Email"
+            className="input input-bordered w-full"
             required
           />
         </div>
 
-        <select name="status" className="select select-bordered w-full mt-6">
+        {/* Status */}
+        <select name="status" className="select select-bordered w-full mt-4">
           <option value="active">Active</option>
           <option value="paused">Paused</option>
           <option value="closed">Closed</option>
         </select>
 
-        <button className="btn btn-primary w-full mt-6 text-lg">Submit</button>
+        <button type="submit" className="btn btn-primary w-full mt-6 text-lg">
+          Submit
+        </button>
       </form>
     </div>
   );
