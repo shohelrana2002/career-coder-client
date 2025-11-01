@@ -12,6 +12,7 @@ const MyPostJobList = ({ jobs, handleDelete }) => {
               <th>Title</th>
               <th>Deadline</th>
               <th>Status</th>
+              <th>Count</th>
               <th>View Application</th>
               <th>Action</th>
             </tr>

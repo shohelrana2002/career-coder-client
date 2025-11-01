@@ -2,7 +2,6 @@ import { Suspense, useEffect, useState } from "react";
 import useGetAuth from "../../Hooks/useGetAuth";
 import Loader from "../Shared/Loader";
 import MyPostJobList from "./MyPostJobList";
-import { JobsApi } from "../../Api/JobsApi";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
@@ -15,10 +14,9 @@ const MyPostedJobs = () => {
     const fetchData = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:4000/jobs?email=${user.email}`
+          `http://localhost:4000/jobs/applications?email=${user.email}`
         );
-        setJobs(res?.data.data || []);
-        console.log();
+        setJobs(res?.data || []);
       } catch (err) {
         console.log(err);
       }
