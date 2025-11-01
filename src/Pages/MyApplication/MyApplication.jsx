@@ -7,6 +7,7 @@ import Loader from "../Shared/Loader";
 
 const MyApplication = () => {
   const { user } = useGetAuth();
+
   return (
     <div>
       <ApplicationStats />

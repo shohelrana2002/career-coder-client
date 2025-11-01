@@ -10,6 +10,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { auth } from "../Firebase/Firebase";
+import axios from "axios";
 // eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext(null);
 
@@ -30,10 +31,20 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(app, async (currentUser) => {
-      if (currentUser) {
-        // console.log(currentUser);
-        setUser(currentUser);
-        setLoading(false);
+      setUser(currentUser);
+      setLoading(false);
+      if (currentUser?.email) {
+        const userData = { email: currentUser?.email };
+        axios
+          .post("http://localhost:4000/jwt", userData, {
+            withCredentials: true,
+          })
+          .then((res) => {
+            console.log(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       } else {
         setLoading(false);
         setUser(null);

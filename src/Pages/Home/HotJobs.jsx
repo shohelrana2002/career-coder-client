@@ -5,7 +5,7 @@ const HotJobs = ({ loaderPromise }) => {
   const jobs = use(loaderPromise);
 
   return (
-    <div className="grid grid-cols-3 gap-x-3 gap-y-2 s">
+    <div className="grid grid-cols-3 gap-x-3 gap-y-2">
       {jobs?.data?.map((job) => (
         <JobsCard key={job._id} job={job} />
       ))}
