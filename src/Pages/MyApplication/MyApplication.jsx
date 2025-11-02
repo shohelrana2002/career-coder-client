@@ -12,7 +12,9 @@ const MyApplication = () => {
     <div>
       <ApplicationStats />
       <Suspense fallback={<Loader />}>
-        <ApplicationList loaderPromise={ApiURL(user?.email)} />
+        <ApplicationList
+          loaderPromise={ApiURL(user?.email, user?.accessToken)}
+        />
       </Suspense>
     </div>
   );
