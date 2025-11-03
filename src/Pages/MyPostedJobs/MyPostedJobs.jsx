@@ -14,7 +14,12 @@ const MyPostedJobs = () => {
     const fetchData = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:4000/jobs/applications?email=${user.email}`
+          `http://localhost:4000/jobs/applications?email=${user.email}`,
+          {
+            headers: {
+              authorization: `Bearer ${user?.accessToken}`,
+            },
+          }
         );
         setJobs(res?.data || []);
       } catch (err) {
