@@ -31,7 +31,7 @@ const JobApply = () => {
 
     try {
       await axios
-        .post(`http://localhost:4000/applied`, appliedData)
+        .post(`https://career-coder-server.vercel.app/applied`, appliedData)
         .then((res) => {
           if (res?.data?.insertedId) {
             toast.success("Applied Jobs Successfully");

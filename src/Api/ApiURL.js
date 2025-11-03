@@ -2,9 +2,10 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 export const ApiURL = async (email, accessToken) => {
+  // not use
   try {
     const fetchData = await axios.get(
-      `http://localhost:4000/application?email=${email}`,
+      `https://career-coder-server.vercel.app/application?email=${email}`,
       {
         headers: {
           authorization: `Bearer ${accessToken}`,

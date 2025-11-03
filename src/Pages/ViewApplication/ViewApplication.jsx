@@ -8,7 +8,10 @@ const ViewApplication = () => {
   const handleStatus = async (e, application_id) => {
     const status = e.target.value;
     await axios
-      .patch(`http://localhost:4000/application/${application_id}`, { status })
+      .patch(
+        `https://career-coder-server.vercel.app/application/${application_id}`,
+        { status }
+      )
       .then((res) => {
         if (res?.data?.modifiedCount) {
           toast.success("Status Updated Success");

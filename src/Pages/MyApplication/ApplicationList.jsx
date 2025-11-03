@@ -26,7 +26,9 @@ const ApplicationList = ({ loaderPromise }) => {
         text: "Your file has been deleted.",
         icon: "success",
       });
-      await axios.delete(`http://localhost:4000/application/${id}`);
+      await axios.delete(
+        `https://career-coder-server.vercel.app/application/${id}`
+      );
       toast.success("Delete Applied successfully");
       setData((prev) => prev.filter((item) => item._id !== id));
     }

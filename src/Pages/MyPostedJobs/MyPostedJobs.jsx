@@ -5,23 +5,18 @@ import MyPostJobList from "./MyPostJobList";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
+import useApplicationApi from "../../Hooks/useApplicationApi";
 
 const MyPostedJobs = () => {
   const { user, loading } = useGetAuth();
   const [jobs, setJobs] = useState([]);
+  const { myPostedJobs } = useApplicationApi();
   useEffect(() => {
-    if (!user?.email) return;
+    if (loading || !user?.email) return;
     const fetchData = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:4000/jobs/applications?email=${user.email}`,
-          {
-            headers: {
-              authorization: `Bearer ${user?.accessToken}`,
-            },
-          }
-        );
-        setJobs(res?.data || []);
+        const data = await myPostedJobs(user.email);
+        setJobs(data || []);
       } catch (err) {
         console.log(err);
       }
@@ -46,12 +41,14 @@ const MyPostedJobs = () => {
         text: "Your file has been deleted.",
         icon: "success",
       });
-      await axios.delete(`http://localhost:4000/jobs/${id}`).then((res) => {
-        if (res?.data?.acknowledged) {
-          toast.success("Deleted Successfully");
-          setJobs((prev) => prev.filter((job) => job._id !== id));
-        }
-      });
+      await axios
+        .delete(`https://career-coder-server.vercel.app/jobs/${id}`)
+        .then((res) => {
+          if (res?.data?.acknowledged) {
+            toast.success("Deleted Successfully");
+            setJobs((prev) => prev.filter((job) => job._id !== id));
+          }
+        });
     }
   };
   if (loading) return <Loader />;
